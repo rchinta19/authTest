@@ -3,7 +3,7 @@ import { navigate, useLocation, useNavigate } from "react-router-dom";
 function Login({ up }) {
   let navigate = useNavigate();
   let location = useLocation();
-  const from = location.state?.from || "/";
+  const from = location.state?.from || "/profile";
   const [uidPwd, setUidPwd] = useState({
     name: "",
     password: "",
@@ -24,7 +24,7 @@ function Login({ up }) {
         console.log(res);
         if (res.ok) {
           up(true);
-          navigate(from, { replace: true });
+          navigate("/profile", { replace: true });
         }
         return res;
       })

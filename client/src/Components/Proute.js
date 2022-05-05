@@ -6,7 +6,6 @@ import { userContext } from "../App";
 function Proute({ children }) {
   const location = useLocation();
   const auth = useContext(userContext);
-  const navigate = useNavigate();
 
   if (auth) {
     return children;
