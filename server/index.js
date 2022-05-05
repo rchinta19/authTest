@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
@@ -10,18 +8,40 @@ const helmet = require("helmet");
 const hpp = require("hpp");
 const csurf = require("csurf");
 const cors = require("cors");
+const passport = require("passport");
+const UserRoute = require("./Routes/UserRoutes");
+
+if (process.env.NODE_ENV !== "production") {
+  // Load environment variables from .env file in non prod environments
+  require("dotenv").config();
+}
+// require("./Strategies/JwtStrategy");
+// require("./Strategies/LocalStrategy");
+// require("./authenticate");
 app.use(bodyParser.json());
 // --------------
 const cookie_parser = require("cookie-parser");
-// app.use(cookie_parser(process.env.COOKIE_SECRET));
+app.use(cookie_parser(process.env.COOKIE_SECRET));
 // ----------------------
 
-app.use(cors());
 app.use(express.urlencoded({ extended: false }));
-/*Security*/
-// app.use(helmet());
-// app.use(hpp());
-//-----
+const whitelist = process.env.WHITELISTED_DOMAINS
+  ? process.env.WHITELISTED_DOMAINS.split(",")
+  : [];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(passport.initialize());
 // app.use(
 //   session({
 //     name: "session",
@@ -32,7 +52,9 @@ app.use(express.urlencoded({ extended: false }));
 
 // app.use(csurf());
 
-app.use("/user", loginRoute);
+//----- // app.use(hpp()); // app.use(helmet());
+// app.use("/user", loginRoute);
+app.use("/user", UserRoute);
 
 const url =
   "mongodb+srv://monk:MOWtN0RZef1bzpzF@cluster0.oqwgr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -40,6 +62,7 @@ const url =
 const mongooseConnection = async () => {
   await mongoose.connect(url).then((res) => {
     console.log("connected");
+    // });
   });
 };
 mongooseConnection().catch((err) => console.log(err));

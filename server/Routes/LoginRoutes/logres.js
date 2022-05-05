@@ -32,7 +32,6 @@ router.post("/login", (req, res) => {
   );
 });
 router.post("/register", (req, res) => {
-  console.log(req.body);
   user.findOne({ phone: req.body.phone }, async (err, p) => {
     if (err) {
       console.error(err);
