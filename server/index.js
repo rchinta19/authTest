@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 // require("./Strategies/JwtStrategy");
-// require("./Strategies/LocalStrategy");
+require("./Strategies/LocalStrategy");
 // require("./authenticate");
 app.use(bodyParser.json());
 // --------------
