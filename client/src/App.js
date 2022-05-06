@@ -8,9 +8,9 @@ import Proute from "./Components/Proute";
 import { useContext, useState, createContext } from "react";
 import Secret from "./Components/Secret";
 import Details from "./Components/Details";
-export const userContext = createContext({ status: false, tkn: "k" });
+export const userContext = createContext({ status: false, tkn: "" });
 function App() {
-  const [user, setUser] = useState({ status: false, tkn: "k" });
+  const [user, setUser] = useState({ status: false, tkn: "" });
   const auth = useContext(userContext);
   const checkAuth = (u) => {
     console.log("my auth", u, auth);

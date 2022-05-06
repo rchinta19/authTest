@@ -70,7 +70,6 @@ router.post("/login", passport.authenticate("local"), (req, res, next) => {
   );
 });
 router.get("/details", verifyUser, (req, res, next) => {
-  console.log(req);
   res.send(req.user);
 });
 router.get("/secret", (req, res) => {
