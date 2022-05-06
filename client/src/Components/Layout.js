@@ -16,7 +16,7 @@ function Layout({ up }) {
     <div>
       <nav>
         <ul>
-          {!auth ? (
+          {!auth.status ? (
             <>
               <li>
                 <Link to="/register">Register</Link>
@@ -32,7 +32,7 @@ function Layout({ up }) {
             <></>
           )}
 
-          {auth ? (
+          {auth.status ? (
             <>
               <li>
                 <Link
@@ -48,6 +48,12 @@ function Layout({ up }) {
               </li>
               <li>
                 <Link to="/profile">profile</Link>
+              </li>
+              <li>
+                <Link to="/secret">secret</Link>
+              </li>
+              <li>
+                <Link to="/details">details</Link>
               </li>
             </>
           ) : (

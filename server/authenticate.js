@@ -5,10 +5,11 @@ exports.COOKIE_OPTIONS = {
   httpOnly: true,
   // Since localhost is not having https protocol,
   // secure cookies do not work correctly (in postman)
+  secret: process.env.COOKIE_SECRET,
   secure: !dev,
   signed: true,
   maxAge: 24 * 60 * 60 * 1000, //eval(process.env.REFRESH_TOKEN_EXPIRY)
-  sameSite: "none",
+  //   sameSite: "none",
 };
 exports.getToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, {

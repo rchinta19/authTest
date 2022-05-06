@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 function Register() {
   const [uidPwd, setUidPwd] = useState({
-    userName: "",
+    name: "",
     phone: "",
     password: "",
   });
@@ -12,11 +12,11 @@ function Register() {
     headers: {
       "Content-type": "application/json",
     },
-    body: uidPwd,
+    body: JSON.stringify(uidPwd),
   };
-  const loginUser = (e) => {
+  const rUser = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8090/login", options);
+    fetch("http://localhost:8090/user/signup", options);
   };
   return (
     <div>
@@ -30,7 +30,7 @@ function Register() {
             value={uidPwd.userName}
             placeholder="Please Enter User Name"
             onChange={(e) => {
-              setUidPwd((prev) => ({ ...prev, userName: e.target.value }));
+              setUidPwd((prev) => ({ ...prev, name: e.target.value }));
             }}
           />
         </label>
@@ -60,6 +60,7 @@ function Register() {
             }}
           />
         </label>
+        <button onClick={rUser}>register</button>
       </form>
     </div>
   );

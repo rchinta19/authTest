@@ -7,7 +7,7 @@ function Proute({ children }) {
   const location = useLocation();
   const auth = useContext(userContext);
 
-  if (auth) {
+  if (auth.status) {
     return children;
   } else {
     // navigate("/");

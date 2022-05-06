@@ -5,12 +5,13 @@ function Login({ up }) {
   let location = useLocation();
   const from = location.state?.from || "/profile";
   const [uidPwd, setUidPwd] = useState({
-    name: "",
+    username: "",
     password: "",
   });
   const options = {
     method: "POST",
     mode: "cors",
+    credentials: "include",
     headers: {
       "Content-type": "application/json",
     },
@@ -18,17 +19,21 @@ function Login({ up }) {
   };
   const loginUser = (e) => {
     e.preventDefault();
-    console.log(uidPwd);
+
     fetch("http://localhost:8090/user/login", options)
       .then((res) => {
-        console.log(res);
-        if (res.ok) {
-          up(true);
+        return res.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          up({ status: data.success, tkn: data.token });
           navigate("/profile", { replace: true });
         }
-        return res;
+        return data;
       })
-      .then((data) => console.log(data));
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <div>
@@ -42,7 +47,7 @@ function Login({ up }) {
             value={uidPwd.userName}
             placeholder="Please Enter User Name"
             onChange={(e) => {
-              setUidPwd((prev) => ({ ...prev, name: e.target.value }));
+              setUidPwd((prev) => ({ ...prev, username: e.target.value }));
             }}
           />
         </label>

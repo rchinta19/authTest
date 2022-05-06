@@ -6,6 +6,7 @@ const {
   getToken,
   COOKIE_OPTIONS,
   getRefreshToken,
+  verifyUser,
 } = require("../authenticate");
 const passport = require("passport");
 
@@ -48,7 +49,6 @@ router.post("/signup", (req, res, next) => {
   }
 });
 router.post("/login", passport.authenticate("local"), (req, res, next) => {
-  console.log(req);
   const token = getToken({ _id: req.user._id });
 
   const refreshToken = getRefreshToken({ _id: req.user._id });
@@ -68,6 +68,16 @@ router.post("/login", passport.authenticate("local"), (req, res, next) => {
     },
     (err) => next(err)
   );
+});
+router.get("/details", verifyUser, (req, res, next) => {
+  console.log(req);
+  res.send(req.user);
+});
+router.get("/secret", (req, res) => {
+  console.log(req.cookies);
+  res.send({
+    secret: "production not set",
+  });
 });
 
 module.exports = router;

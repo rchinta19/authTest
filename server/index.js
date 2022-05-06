@@ -10,32 +10,50 @@ const csurf = require("csurf");
 const cors = require("cors");
 const passport = require("passport");
 const UserRoute = require("./Routes/UserRoutes");
-
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments
   require("dotenv").config();
 }
-// require("./Strategies/JwtStrategy");
+require("./Strategies/JwtStrategy");
 require("./Strategies/LocalStrategy");
-// require("./authenticate");
-app.use(bodyParser.json());
+require("./authenticate");
+
 // --------------
 const cookie_parser = require("cookie-parser");
+const { verifyUser } = require("./authenticate");
+app.use(bodyParser.json());
+// app.use(function (req, res, next) {
+//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:8888");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "X-Requested-With,content-type"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", true);
+
+//   next();
+// });
 app.use(cookie_parser(process.env.COOKIE_SECRET));
 // ----------------------
 
 app.use(express.urlencoded({ extended: false }));
-const whitelist = process.env.WHITELISTED_DOMAINS
-  ? process.env.WHITELISTED_DOMAINS.split(",")
-  : [];
+
+const whitelist = "http://localhost:3000";
+// process.env.WHITELISTED_DOMAINS
+// ? process.env.WHITELISTED_DOMAINS.split(",")
+// : [];
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: whitelist,
+  //   function (origin, callback) {
+  //   if (!origin || whitelist !== "") {
+  //     callback(null, true);
+  //   } else {
+  //     callback(new Error("Not allowed by CORS"));
+  //   }
+  // },
 
   credentials: true,
 };

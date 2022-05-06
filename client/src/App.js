@@ -6,12 +6,16 @@ import Register from "./Components/Register";
 import Profile from "./Components/Profile";
 import Proute from "./Components/Proute";
 import { useContext, useState, createContext } from "react";
-export const userContext = createContext();
+import Secret from "./Components/Secret";
+import Details from "./Components/Details";
+export const userContext = createContext({ status: false, tkn: "k" });
 function App() {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState({ status: false, tkn: "k" });
   const auth = useContext(userContext);
   const checkAuth = (u) => {
-    setUser(u);
+    console.log("my auth", u, auth);
+    setUser((prev) => ({ ...prev, ...u }));
+    console.log(auth);
   };
 
   const location = useLocation();
@@ -26,8 +30,24 @@ function App() {
             <Route
               path="/profile"
               element={
-                <Proute auth={auth}>
+                <Proute auth={auth.status}>
                   <Profile />
+                </Proute>
+              }
+            />
+            <Route
+              path="/secret"
+              element={
+                <Proute auth={auth.status}>
+                  <Secret />
+                </Proute>
+              }
+            />
+            <Route
+              path="/details"
+              element={
+                <Proute auth={auth.status}>
+                  <Details tkn={auth.tkn} />
                 </Proute>
               }
             />
